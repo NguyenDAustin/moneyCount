@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <fstream>
 using namespace std;
 
 void menu()
@@ -12,7 +12,7 @@ void menu()
     cout << "*******************" << endl;
 }
 
-int calculate(int b, int o, int te, int f, int t, int tt, int ff, int h)
+int calculate(int& b, int o, int te, int f, int t, int tt, int ff, int h)
 {
     o = o;
     te = te * 2;
@@ -27,8 +27,21 @@ int calculate(int b, int o, int te, int f, int t, int tt, int ff, int h)
     return b;
 }
 
+
 int main ()
 {
+    ifstream checkFile("Account.txt"); //checks for file
+    bool fileExists = checkFile.good(); 
+    checkFile.close();
+
+    ofstream file;
+
+    if (!fileExists){
+        file.open("Account.txt");
+    }
+
+    ifstream inputFile("Account.txt");
+
     int opt;
     int bal = 0;
     int con;
@@ -53,7 +66,7 @@ int main ()
     menu();
 
     cin >> opt; 
-    system("cls");
+    system("clear");
     
     switch (opt){
         case 1:
@@ -65,6 +78,7 @@ int main ()
         cout << twenties << " twenties" << endl;
         cout << fifties << " fifties" << endl;
         cout << hundreds << " hundreds" << endl;
+        cout << endl;
         break;
     
     case 2:
@@ -130,4 +144,18 @@ int main ()
         break;
     } 
     } while (opt != 4);
+    
+    if (!fileExists)
+    {
+        file << "Total: $" << bal << endl;
+        file << "Ones: " << ones << endl;
+        file << "Twos: " << twos << endl;
+        file << "Fives: " << fives << endl;
+        file << "Tens: " << tens << endl;
+        file << "Twenties: " << twenties << endl;
+        file << "Fifties: " << fifties << endl;
+        file << "Hundreds: " << hundreds << endl;
+
+        file.close();
+    }
 }

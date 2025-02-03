@@ -16,7 +16,7 @@ int calculate(int o, int te, int f, int t, int tt, int ff, int h) {
     return (o + (te * 2) + (f * 5) + (t * 10) + (tt * 20) + (ff * 50) + (h * 100));
 }
 
-void acc(int b, int o, int te, int f, int t, int tt, int ff, int h) {
+void acc(int b, int o, int te, int f, int t, int tt, int ff, int h, string d) {
     fstream file;
 
     file.open("Accounts.txt", ios::out);
@@ -29,12 +29,32 @@ void acc(int b, int o, int te, int f, int t, int tt, int ff, int h) {
         file << "Twenties: " << tt << endl;
         file << "Fifties: " << ff << endl;
         file << "Hundreds: " << h << endl;
+        file << d << endl;
 
         file.close();
     }
 }
 
-void val(int &bal, int &ones, int &twos, int &fives, int &tens, int &twenties, int &fifties, int &hundreds) {
+void sacc(int b, int o, int te, int f, int t, int tt, int ff, int h, string d) {
+    fstream file;
+
+    file.open("saving.txt", ios::out);
+    if (file.is_open()) {
+        file << "Total: $" << b << endl;
+        file << "Ones: " << o << endl;
+        file << "Twos: " << te << endl;
+        file << "Fives: " << f << endl;
+        file << "Tens: " << t << endl;
+        file << "Twenties: " << tt << endl;
+        file << "Fifties: " << ff << endl;
+        file << "Hundreds: " << h << endl;
+        file << d << endl;
+
+        file.close();
+    }
+}
+
+void val(int& bal, int& ones, int& twos, int& fives, int& tens, int& twenties, int& fifties, int& hundreds) {
     fstream file;
     file.open("Accounts.txt", ios::in);
 
@@ -64,6 +84,45 @@ void val(int &bal, int &ones, int &twos, int &fives, int &tens, int &twenties, i
 
         getline(file, line);
         hundreds = stoi(line.substr(line.find(":") + 2));
+
+
+    }
+
+    file.close();
+}
+
+void sval(int& bal, int& ones, int& twos, int& fives, int& tens, int& twenties, int& fifties, int& hundreds) {
+    fstream file;
+    file.open("spend.txt", ios::in);
+
+    if (file.is_open()) {
+        string line;
+
+        getline(file, line);
+        bal = stoi(line.substr(line.find("$") + 1));
+
+        getline(file, line);
+        ones = stoi(line.substr(line.find(":") + 2));
+
+        getline(file, line);
+        twos = stoi(line.substr(line.find(":") + 2));
+
+        getline(file, line);
+        fives = stoi(line.substr(line.find(":") + 2));
+
+        getline(file, line);
+        tens = stoi(line.substr(line.find(":") + 2));
+
+        getline(file, line);
+        twenties = stoi(line.substr(line.find(":") + 2));
+
+        getline(file, line);
+        fifties = stoi(line.substr(line.find(":") + 2));
+
+        getline(file, line);
+        hundreds = stoi(line.substr(line.find(":") + 2));
+
+
     }
 
     file.close();
@@ -79,7 +138,16 @@ int main() {
     int fifties = 0;
     int hundreds = 0;
 
-    val(bal, ones, twos, fives, tens, twenties, fifties, hundreds);
+    char a;
+    cout << "a for savings or s for spending" << endl;
+    cin >> a;
+    
+    if (a == 'a') {
+        val(bal, ones, twos, fives, tens, twenties, fifties, hundreds);
+    }
+    else if (a == 's') {
+        sval(bal, ones, twos, fives, tens, twenties, fifties, hundreds);
+    }
 
     int opt;
 
@@ -157,8 +225,16 @@ int main() {
             break;
         }
     } while (opt != 4);
+    
+    string date;
+    cout << "enter the date" << endl;
+    cin >> date;
 
-    acc(bal, ones, twos, fives, tens, twenties, fifties, hundreds);
-
+    if (a == 'a') {
+        acc(bal, ones, twos, fives, tens, twenties, fifties, hundreds, date);
+    }
+    else if (a == 's') {
+        sacc(bal, ones, twos, fives, tens, twenties, fifties, hundreds, date);
+    }
     return 0;
 }

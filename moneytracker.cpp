@@ -38,7 +38,7 @@ void acc(int b, int o, int te, int f, int t, int tt, int ff, int h, string d) {
 void sacc(int b, int o, int te, int f, int t, int tt, int ff, int h, string d) {
     fstream file;
 
-    file.open("saving.txt", ios::out);
+    file.open("spend.txt", ios::out);
     if (file.is_open()) {
         file << "Total: $" << b << endl;
         file << "Ones: " << o << endl;
